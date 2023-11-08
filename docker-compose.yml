@@ -1,10 +1,15 @@
-version: '3'
+version: '3.8'
 
 volumes:
-  trailerplan-event-data:
+  trailerplan-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./data/docker/app/
+      o: bind
 
 networks:
-  trailerplan-event-network:
+  trailerplan-network:
     driver: bridge
 
 services:
@@ -13,17 +18,15 @@ services:
     image: ${APP_PROJECT}/${APP_SUB_PROJECT}:${APP_VERSION}
     hostname: ${APP_HOSTNAME}
     container_name: ${APP_CONTAINER_NAME}
-    environment:
-      ITRA_CONFIG: ${APP_ITRA_CONFIG}
     build:
       context: .
       dockerfile: data/container/app_java/${DOCKER_FILE}
     env_file:
       - ./data/container/config/${ENV_FILE}
     volumes:
-      - ./data/docker/app/:/app/
+      - trailerplan-data:/app/
     ports:
       - "8080:8080"
     command: /usr/local/openjdk-11/bin/java -jar /app/trailerplan-event-api.jar com.trailerplan.application.TrailerplanEventApiApp
     networks:
-      - trailerplan-event-network
+      - trailerplan-network

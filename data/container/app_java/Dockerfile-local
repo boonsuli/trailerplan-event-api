@@ -1,6 +1,6 @@
 FROM openjdk:11.0.12-jre
 MAINTAINER Buon SUI <boonsuli@gmail.com>
-VOLUME /tmp
+VOLUME /app
 RUN mkdir -p /app/
 WORKDIR /app
 COPY ./target/trailerplan-event-api-1.0.0-SNAPSHOT.jar /app/trailerplan-event-api.jar
